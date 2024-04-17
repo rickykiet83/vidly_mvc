@@ -2,17 +2,20 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vidly_MVC.Data;
 
 #nullable disable
 
-namespace Vidly_MVC.Data.Migrations
+namespace Vidly_MVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240417044600_Initial_Migration")]
+    partial class Initial_Migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -219,6 +222,9 @@ namespace Vidly_MVC.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateOnly?>("Birthdate")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsSubscribedToNewsLetter")
                         .HasColumnType("INTEGER");
 
@@ -237,6 +243,21 @@ namespace Vidly_MVC.Data.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("Vidly_MVC.Models.Genre", b =>
+                {
+                    b.Property<byte>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genres");
+                });
+
             modelBuilder.Entity("Vidly_MVC.Models.MembershipType", b =>
                 {
                     b.Property<byte>("Id")
@@ -247,6 +268,11 @@ namespace Vidly_MVC.Data.Migrations
 
                     b.Property<byte>("DurationInMonths")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
 
                     b.Property<short>("SignupFee")
                         .HasColumnType("INTEGER");
@@ -262,11 +288,29 @@ namespace Vidly_MVC.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte>("GenreId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte>("NumberAvailable")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte>("NumberInStock")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
                 });
@@ -331,6 +375,17 @@ namespace Vidly_MVC.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("MembershipType");
+                });
+
+            modelBuilder.Entity("Vidly_MVC.Models.Movie", b =>
+                {
+                    b.HasOne("Vidly_MVC.Models.Genre", "Genre")
+                        .WithMany()
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genre");
                 });
 #pragma warning restore 612, 618
         }

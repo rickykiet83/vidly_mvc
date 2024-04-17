@@ -7,15 +7,15 @@
 <h2>Movies</h2>
 <table class="table table-bordered table-hover">
     <thead>
-    <tr>
-        <th>Movie</th>
-    </tr>
+        <tr>
+            <th>Movie</th>
+        </tr>
     </thead>
     <tbody>
     @foreach (var movie in Model)
     {
         <tr>
-            <td>@movie.Name</td>
+            <td>@Html.ActionLink(movie.Name, "Details", new { id = movie.Id }, null)</td>
         </tr>
     }
     </tbody>
