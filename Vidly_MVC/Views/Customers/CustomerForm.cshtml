@@ -14,6 +14,7 @@ use @using to automatically dispose
     <div class="mb-3">
         @Html.LabelFor(m => m.Customer.Name, new { @class = "form-label" })
         @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.Name);
     </div>
     <div class="mb-3">
         @Html.LabelFor(m => m.Customer.Birthdate, new { @class = "form-label" })
