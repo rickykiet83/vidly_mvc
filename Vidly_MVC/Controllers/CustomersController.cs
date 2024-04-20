@@ -36,6 +36,7 @@ public class CustomersController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public ActionResult Save(Customer customer)
     {
         if (!ModelState.IsValid)
