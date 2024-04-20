@@ -11,10 +11,17 @@ use @using to automatically dispose
 *@
 @using (Html.BeginForm("Save", "Customers"))
 {
+    @Html.ValidationSummary(true, "Please fix the following errors.")
     <div class="mb-3">
         @Html.LabelFor(m => m.Customer.Name, new { @class = "form-label" })
         @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.Customer.Name)
+    </div>
+    <div class="mb-3">
+        @Html.LabelFor(m => m.Customer.MembershipTypeId, new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.Customer.MembershipTypeId,
+            new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.MembershipTypeId)
     </div>
     <div class="mb-3">
         @Html.LabelFor(m => m.Customer.Birthdate, new { @class = "form-label" })
@@ -26,12 +33,6 @@ use @using to automatically dispose
             @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsLetter, new { @class = "form-check-input" })
             @Html.Label("Subscribed to Newsletter")
         </div>
-    </div>
-    <div class="mb-3">
-        @Html.LabelFor(m => m.Customer.MembershipTypeId, new { @class = "form-label" })
-        @Html.DropDownListFor(m => m.Customer.MembershipTypeId,
-            new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Customer.MembershipTypeId)
     </div>
     @Html.HiddenFor(m => m.Customer.Id);
     <button type="submit" class="btn btn-primary">Save</button>
