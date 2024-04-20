@@ -1,6 +1,6 @@
 @model Vidly_MVC.ViewModels.CustomerFormViewModel
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "New Customer";
     Layout = "_Layout";
 }
 
@@ -36,4 +36,9 @@ use @using to automatically dispose
     </div>
     @Html.HiddenFor(m => m.Customer.Id);
     <button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 }
