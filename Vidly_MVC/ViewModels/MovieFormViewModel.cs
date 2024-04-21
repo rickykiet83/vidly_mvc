@@ -9,13 +9,9 @@ public class MovieFormViewModel
 
     public int? Id { get; set; }
 
-    [Required]
-    [StringLength(255)]
-    public string Name { get; set; }
+    [Required] [StringLength(255)] public string Name { get; set; }
 
-    [Display(Name = "Genre")]
-    [Required]
-    public byte? GenreId { get; set; }
+    [Display(Name = "Genre")] [Required] public byte? GenreId { get; set; }
 
     [Display(Name = "Release Date")]
     [Required]
@@ -26,14 +22,7 @@ public class MovieFormViewModel
     [Required]
     public byte? NumberInStock { get; set; }
 
-
-    public string Title
-    {
-        get
-        {
-            return Id != 0 ? "Edit Movie" : "New Movie";
-        }
-    }
+    public string Title => Id != 0 ? "Edit Movie" : "New Movie";
 
     public MovieFormViewModel()
     {
