@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <Folder Include="Controllers\Api\" />
+      <Folder Include="wwwroot\lib\data-tables\" />
     </ItemGroup>
 
 </Project>
