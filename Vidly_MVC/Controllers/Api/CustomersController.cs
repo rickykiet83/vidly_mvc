@@ -54,7 +54,7 @@ namespace Vidly_MVC.Controllers.Api
 
         // POST /api/customers
         [HttpPost]
-        public ActionResult CreateCustomer(CustomerDto customerDto)
+        public IActionResult CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -64,7 +64,7 @@ namespace Vidly_MVC.Controllers.Api
             _context.SaveChanges();
 
             customerDto.Id = customer.Id;
-            return Created(new Uri(Request.Path + "/" + customerDto.Id), customerDto);
+            return CreatedAtAction(nameof(GetCustomer), new { id = customer.Id }, customerDto);
         }
 
         // PUT /api/customers/1

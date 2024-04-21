@@ -10,7 +10,7 @@ public class MappingProfile : Profile
     {
         // Domain to Dto
         CreateMap<Customer, CustomerDto>();
-        CreateMap<MembershipType, MembershipTypeDto>();
+        CreateMap<MembershipType, MembershipTypeDto>().ReverseMap();
         
         CreateMap<Movie, MovieDto>();
         CreateMap<Genre, GenreDto>();

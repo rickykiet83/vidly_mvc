@@ -4,8 +4,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Vidly_MVC;
 using Vidly_MVC.Data;
+using Vidly_MVC.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.Configure<JsonOptions>(options =>
-{
-    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-    options.JsonSerializerOptions.IncludeFields = true;
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services.ConfigureJsonOptions();
 
 var app = builder.Build();
 
