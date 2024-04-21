@@ -13,7 +13,7 @@ public class MovieDto
     [Microsoft.Build.Framework.Required]
     public byte GenreId { get; set; }
 
-    public GenreDto Genre { get; set; }
+    public GenreDto? Genre { get; set; }
 
     public DateTime DateAdded { get; set; }
 
@@ -21,4 +21,6 @@ public class MovieDto
 
     [Range(1, 20)]
     public byte NumberInStock { get; set; }
+    
+    public byte NumberAvailable { get; set; }
 }

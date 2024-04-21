@@ -20,6 +20,7 @@ namespace Vidly_MVC.Controllers.Api
             _mapper = mapper;
         }
 
+        [HttpGet]
         public IEnumerable<MovieDto> GetMovies(string query = null)
         {
             var moviesQuery = _context.Movies
@@ -31,9 +32,10 @@ namespace Vidly_MVC.Controllers.Api
 
             return moviesQuery
                 .ToList()
-                .Select(_mapper.Map<Movie, MovieDto>);
+                .Select(_mapper.Map<MovieDto>);
         }
 
+        [HttpGet("{id}")]
         public IActionResult GetMovie(int id)
         {
             var movie = _context.Movies.SingleOrDefault(c => c.Id == id);
@@ -50,7 +52,7 @@ namespace Vidly_MVC.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var movie = _mapper.Map<MovieDto, Movie>(movieDto);
+            var movie = _mapper.Map<Movie>(movieDto);
             _context.Movies.Add(movie);
             _context.SaveChanges();
 
@@ -58,7 +60,7 @@ namespace Vidly_MVC.Controllers.Api
             return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, _mapper.Map<Movie, MovieDto>(movie));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult UpdateMovie(int id, MovieDto movieDto)
         {
             if (!ModelState.IsValid)
@@ -76,7 +78,7 @@ namespace Vidly_MVC.Controllers.Api
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteMovie(int id)
         {
             var movieInDb = _context.Movies.SingleOrDefault(c => c.Id == id);
