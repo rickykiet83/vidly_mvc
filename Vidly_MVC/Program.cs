@@ -22,6 +22,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.ConfigureJsonOptions();
+builder.Services.ConfigureCache();
 
 var app = builder.Build();
 

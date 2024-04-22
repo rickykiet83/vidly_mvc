@@ -1,7 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.CodeAnalysis;
 using Vidly_MVC.Models;
+using Location = Mono.TextTemplating.Location;
 
 namespace Vidly_MVC.Controllers;
 
@@ -15,6 +18,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [OutputCache(Duration = 30)]
     public IActionResult Index()
     {
         return View();

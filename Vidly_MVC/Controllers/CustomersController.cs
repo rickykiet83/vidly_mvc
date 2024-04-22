@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Vidly_MVC.Data;
 using Vidly_MVC.Models;
 using Vidly_MVC.ViewModels;
@@ -9,14 +9,24 @@ namespace Vidly_MVC.Controllers;
 public class CustomersController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IMemoryCache _memoryCache;
 
-    public CustomersController(ApplicationDbContext context)
+    public CustomersController(ApplicationDbContext context, IMemoryCache memoryCache)
     {
         _context = context;
+        _memoryCache = memoryCache;
     }
 
     public ViewResult Index()
     {
+        if (_memoryCache.TryGetValue("Genres", out List<Genre>? genres)) return View();
+        
+        genres = _context.Genres.ToList();
+        _memoryCache.Set("Genres", genres, new MemoryCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+        });
+
         return View();
     }
 
@@ -45,7 +55,7 @@ public class CustomersController : Controller
             };
             return View("CustomerForm", viewModel);
         }
-        
+
         if (customer.Id == 0)
             _context.Customers.Add(customer);
         else
@@ -56,6 +66,7 @@ public class CustomersController : Controller
             customerInDb.MembershipTypeId = customer.MembershipTypeId;
             customerInDb.IsSubscribedToNewsLetter = customer.IsSubscribedToNewsLetter;
         }
+
         _context.SaveChanges();
         return RedirectToAction("Index", "Customers");
     }

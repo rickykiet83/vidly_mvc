@@ -14,4 +14,9 @@ public static class ServiceExtensions
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
     }
+
+    public static void ConfigureCache(this IServiceCollection services)
+    {
+        services.AddMemoryCache();
+    }
 }
