@@ -17,7 +17,7 @@ namespace Vidly_MVC.Controllers.Api
         }
 
         [HttpPost]
-        public IActionResult CreateNewRentals(NewRentalDto newRental)
+        public IActionResult NewRentals(NewRentalDto newRental)
         {
             var customer = _context.Customers.Single(
                 c => c.Id == newRental.CustomerId);
