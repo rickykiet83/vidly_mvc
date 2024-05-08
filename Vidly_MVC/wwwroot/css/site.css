@@ -20,11 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
-
+label.error,
 .field-validation-error {
   color: #dc3545;
 }
-
+.input-error,
 .input-validation-error {
   border: 2px solid #dc3545;
 }

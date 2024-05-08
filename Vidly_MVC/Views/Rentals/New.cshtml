@@ -10,13 +10,13 @@
     <div class="mb-3">
         <label for="">Customer</label>
         <div class="tt-container">
-            <input id="customers" type="text" class="form-control">
+            <input id="customers" name="customer" required data-rule-validCustomer="true" type="text" class="form-control">
         </div>
     </div>
     <div class="mb-3">
         <label for="">Movie</label>
         <div class="tt-container">
-            <input id="movie" type="text" class="form-control">
+            <input id="movie" name="movie" type="text" data-rule-atLeastOneMovie="true" class="form-control">
         </div>
     </div>
 
@@ -30,10 +30,12 @@
 
 @section Scripts
 {
+    @await Html.PartialAsync("_ValidationScriptsPartial");
     <script>
         $(document).ready(function () {
             let vm = {
-                movieIds: []
+                movieIds: [],
+                customerId: null
             };
             const customers = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
@@ -78,22 +80,43 @@
 
                 vm.movieIds.push(movie.id);
             });
+            
+            $.validator.addMethod("validCustomer", function () {
+                console.log('validating validCustomer');
+                return vm.customerId && vm.customerId !== 0;
+            }, "Please select a valid customer");
 
-            $("#newRental").submit(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: "/api/newRentals",
-                    contentType: "application/json",
-                    method: "post",
-                    data: JSON.stringify(vm)
-                }).done(function () {
-                    console.log('done');
-                    toastr.success('Rental successfully created');
-                }).fail(function () {
-                    toastr.error('An error occurred while creating the rental');
-                })
+            $.validator.addMethod("atLeastOneMovie", function () {
+                console.log('validating atLeastOneMovie');
+                return vm.movieIds.length > 0;
+            }, "Please select at least one movie.");
+            
+            const validator = $("newRental").validate({
+                submitHandler: function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: "/api/newRentals",
+                        contentType: "application/json",
+                        method: "post",
+                        data: JSON.stringify(vm)
+                    }).done(function () {
+                        console.log('done');
+                        toastr.success('Rental successfully created');
+                        $("#customers").typeahead("val", "");
+                        $("#movie").typeahead("val", "");
+                        $("#movies").empty();
+                        vm = {
+                            movieIds: [],
+                            customerId: null
+                        };
+                        validator.resetForm();
+                    }).fail(function () {
+                        toastr.error('An error occurred while creating the rental');
+                    });
+                    
+                    return false;
+                }
             });
-                
         });
     </script>
 }
